@@ -1,5 +1,7 @@
+import 'package:ewire_task/controller/cart_provider.dart';
 import 'package:ewire_task/models/product.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetails extends StatelessWidget {
   final ProductModel product;
@@ -7,6 +9,10 @@ class ProductDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cart = context.watch<CartProvider>();
+
+    final inCart = cart.isInCart(product.id);
+
     return Scaffold(
       appBar: AppBar(title: const Text("Product Details")),
       body: Padding(
@@ -31,11 +37,22 @@ class ProductDetails extends StatelessWidget {
 
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepPurple,
-                foregroundColor: Colors.white,
+                backgroundColor: inCart ? Colors.white : Colors.deepPurple,
+                foregroundColor: inCart ? Colors.deepPurple : Colors.white,
               ),
-              onPressed: () {},
-              child: Text("Add to Cart"),
+              onPressed: () {
+                context.read<CartProvider>().toggleCart(product);
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      inCart
+                          ? "${product.title} removed from cart"
+                          : "${product.title} added to cart",
+                    ),
+                  ),
+                );
+              },
+              child: Text(inCart ? "Remove from Cart" : "Add to Cart"),
             ),
           ],
         ),

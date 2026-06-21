@@ -1,5 +1,6 @@
 import 'package:ewire_task/controller/cart_provider.dart';
 import 'package:ewire_task/controller/product.dart';
+import 'package:ewire_task/controller/theme_provider.dart';
 import 'package:ewire_task/view/product_details.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -26,7 +27,20 @@ class _HomeScreenState extends State<HomeScreen> {
     final provider = context.watch<ProductProvider>();
     final cart = context.watch<CartProvider>();
     return Scaffold(
-      appBar: AppBar(title: const Text("Products")),
+      appBar: AppBar(
+        title: const Text("Products"),
+        actions: [
+          IconButton(
+            icon: Icon(
+              context.watch<ThemeProvider>().isDarkMode
+                  ? Icons.light_mode
+                  : Icons.dark_mode,
+            ),
+            onPressed: () => context.read<ThemeProvider>().toggleTheme(),
+          ),
+          // your cart icon stays here too
+        ],
+      ),
       body: provider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : GridView.builder(

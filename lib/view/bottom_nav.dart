@@ -17,7 +17,7 @@ class BottomNavScreen extends StatelessWidget {
       body: pages[provider.currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: provider.currentIndex,
-        selectedItemColor: Colors.black,
+        selectedItemColor: Colors.deepPurple,
         onTap: (index) {
           context.read<BottomNavProvider>().changeIndex(index);
         },

@@ -1,6 +1,7 @@
 import 'package:ewire_task/controller/bottom_nav_controller.dart';
 import 'package:ewire_task/controller/cart_provider.dart';
 import 'package:ewire_task/controller/product.dart';
+import 'package:ewire_task/controller/theme_provider.dart';
 import 'package:ewire_task/models/cart_item.dart';
 import 'package:ewire_task/view/bottom_nav.dart';
 import 'package:flutter/material.dart';
@@ -12,12 +13,14 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(CartItemAdapter());
   await Hive.openBox<CartItem>('cartBox');
+  await Hive.openBox('settingsBox');
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => BottomNavProvider()),
         ChangeNotifierProvider(create: (_) => ProductProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
       child: const MyApp(),
     ),
@@ -27,13 +30,25 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final themeProvider = context.watch<ThemeProvider>();
+
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Ewire Shop',
+      debugShowCheckedModeBanner: false,
+      themeMode: themeProvider.themeMode,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        brightness: Brightness.light,
+        primarySwatch: Colors.deepPurple,
+        scaffoldBackgroundColor: Colors.white,
+        cardColor: Colors.white,
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        primarySwatch: Colors.deepPurple,
+        scaffoldBackgroundColor: const Color(0xFF121212),
+        cardColor: const Color(0xFF1E1E1E),
       ),
       home: const BottomNavScreen(),
     );

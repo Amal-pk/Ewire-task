@@ -1,4 +1,3 @@
-// lib/models/cart_item.dart
 import 'package:hive/hive.dart';
 
 part 'cart_item.g.dart';

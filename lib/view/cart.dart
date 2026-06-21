@@ -84,7 +84,7 @@ class CartScreen extends StatelessWidget {
                     color: Colors.white,
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.08),
+                        color: Colors.black,
                         blurRadius: 8,
                         offset: const Offset(0, -2),
                       ),
